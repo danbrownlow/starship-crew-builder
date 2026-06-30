@@ -1,34 +1,20 @@
-# React + TypeScript + Vite
+# Technical Challenge
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+- Set up
+        - Using Vite + TS + React to create project.
+        - Oxlint for linting, prettier for formatting.
 
-Currently, two official plugins are available:
+- Using React 19 form actions
+        - Maybe overkill for a small form that returns a list of names, however:
+            - automatically caputuring the return value
+            - exposing an `isPending` variable is genuinly useful in this instance. 
+            - Gives us error state "for free" and is also genuinly useful.
+            - Having access to the previous state is not really a concern here.
+        - Not as important, but the syntax makes the `<Search />` component much cleaner and reduces the components responsibility.
+        - Important to note that form actions are designed for mutations, and we're only reading (hence arguably overkill).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
-
-Note: This will impact Vite dev & build performances.
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
-```
-
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+- Fetching a list of characters
+        - We have an ID available for each character returned in the response.
+        - This makes a great candidate for our key, as it's already returned whilst being stable and unique.
+        - It means we don't need to create one ourselves with uuid() or similar.
+        - Currently, we're just implementing plumbing, tests to follow.
