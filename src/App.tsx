@@ -48,6 +48,9 @@ function App() {
 
   const passengers = people.filter((person) => person.type === "passenger");
 
+  const readyToLaunch =
+    crew.length === crewLimit && passengers.length === passengerLimit;
+
   const addToShipcomplement = (
     type: PersonType,
     id: string,
@@ -84,6 +87,10 @@ function App() {
 
       return newMap;
     });
+  };
+
+  const resetShipState = () => {
+    setShipcomplement(new Map());
   };
 
   return (
@@ -153,6 +160,23 @@ function App() {
               </li>
             ))}
           </ul>
+        </div>
+      </section>
+
+      <section id="launch-control">
+        <div className="launch">
+          {readyToLaunch ? (
+            <p id="launchReadiness">Ready to Launch!</p>
+          ) : (
+            <p id="launchReadiness">Fill crew and passenger slots to launch</p>
+          )}
+          <button
+            aria-describedby="launchReadiness"
+            onClick={resetShipState}
+            disabled={!readyToLaunch}
+          >
+            LAUNCH!!!
+          </button>
         </div>
       </section>
     </>

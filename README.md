@@ -29,11 +29,15 @@
 - Character cards
         - I'm feeling that the cards have become too "heavy" at this point, will consider making them lighter.
 
+- Launch
+        - Quite easy to implement as we already calculated capacity
+        - Gives a descriptive message to the user to understand when the button will be enabled
+
 - Using a Map for app state
         - Seemed appropriate due to the fact we're adding and removing often, and get/delete are nice to work with. 
         - O(1) dedupe, id-keyed access
         - Tradeoff is no array-native functions like map() or filter()
-        - An array would have worked great here too, I just prefered Maps syntax. 
+        - An array would have worked great here too, I just preferred Maps syntax.
 
 - Hooks
         - Used a custom hook to fetch starship data, which returns a tuple of crew/passenger capacity, and any errors. 
@@ -47,4 +51,5 @@
         - aria-labels used to provide descriptive feedback
         - Native buttons and inputs aid keyboard navigation
         - Using a real form, so enter to search, labelling, all included.
-        - We need better visual feedback especially on the cards, `aria-disabled` and a message indicating *why* it's disabled.
+        - Use `aria-describedby` to provide a link between text and button describing when the button will be enabled.
+        - Disabled with description is implemented for launch button but needs to be implemented for the character cards.
