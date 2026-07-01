@@ -1,18 +1,90 @@
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import "./App.css";
 import { Search } from "./components/Search";
 import {
   searchCharactersActions,
   type SearchState,
 } from "./actions/searchAction";
+import { CharacterCard } from "./components/CharacterCard";
+import { useGetShipComplement } from "./hooks/useGetShipComplement";
 
 const initialState: SearchState = { characters: [], error: null };
+
+export interface Person {
+  id: string;
+  name: string;
+  gender: string;
+  birthYear: string;
+}
+
+export type PersonType = "crew" | "passenger";
+type PersonWithType = Person & {
+  type: PersonType;
+};
+
+const SHIP_ID = 10;
+const PASSENGER_LIMIT_FALLBACK = 2;
+const CREW_LIMIT_FALLBACK = 2;
 
 function App() {
   const [state, formAction, isPending] = useActionState(
     searchCharactersActions,
     initialState,
   );
+  const [shipComplement, setShipcomplement] = useState<
+    Map<string, PersonWithType>
+  >(new Map());
+
+  const [compliment, _error] = useGetShipComplement(SHIP_ID);
+
+  const [crewLimit, passengerLimit] = compliment ?? [
+    CREW_LIMIT_FALLBACK,
+    PASSENGER_LIMIT_FALLBACK,
+  ];
+
+  const people = Array.from(shipComplement.values());
+
+  const crew = people.filter((person) => person.type === "crew");
+
+  const passengers = people.filter((person) => person.type === "passenger");
+
+  const addToShipcomplement = (
+    type: PersonType,
+    id: string,
+    person: Person,
+  ) => {
+    setShipcomplement((prevMap) => {
+      const newMap = new Map(prevMap);
+      const currentCount = [...prevMap.values()].filter(
+        (p) => p.type === type,
+      ).length;
+
+      if (type === "passenger") {
+        if (currentCount >= passengerLimit) return prevMap;
+      }
+
+      if (type === "crew") {
+        if (currentCount >= crewLimit) return prevMap;
+      }
+
+      newMap.set(id, {
+        ...person,
+        type,
+      });
+
+      return newMap;
+    });
+  };
+
+  const removeFromShipcomplement = (id: string) => {
+    setShipcomplement((prevMap) => {
+      const newMap = new Map(prevMap);
+
+      newMap.delete(id);
+
+      return newMap;
+    });
+  };
 
   return (
     <>
@@ -23,9 +95,62 @@ function App() {
         <div>
           {isPending && <p>Loading</p>}
 
-          <ul>
+          <ul className="character-results-list">
             {state.characters.map((char) => (
-              <li key={char._id}>{char.properties.name}</li>
+              <li key={char.uid}>
+                <CharacterCard
+                  id={char.uid}
+                  name={char.properties.name}
+                  gender={char.properties.gender}
+                  birthYear={char.properties.birth_year}
+                  addToShip={addToShipcomplement}
+                  removeFromShip={removeFromShipcomplement}
+                  isSelected={shipComplement.has(char.uid)}
+                />
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+      <section id="content">
+        <div>
+          <h2>
+            Crew - {crew.length}/{crewLimit}
+          </h2>
+          <ul className="character-results-list">
+            {crew.map((char) => (
+              <li key={char.id}>
+                <CharacterCard
+                  id={char.id}
+                  name={char.name}
+                  gender={char.gender}
+                  birthYear={char.birthYear}
+                  addToShip={addToShipcomplement}
+                  removeFromShip={removeFromShipcomplement}
+                  isSelected={shipComplement.has(char.id)}
+                />
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div>
+          <h2>
+            Passengers - {passengers.length}/{passengerLimit}
+          </h2>
+          <ul className="character-results-list">
+            {passengers.map((char) => (
+              <li key={char.id}>
+                <CharacterCard
+                  id={char.id}
+                  name={char.name}
+                  gender={char.gender}
+                  birthYear={char.birthYear}
+                  addToShip={addToShipcomplement}
+                  removeFromShip={removeFromShipcomplement}
+                  isSelected={shipComplement.has(char.id)}
+                />
+              </li>
             ))}
           </ul>
         </div>

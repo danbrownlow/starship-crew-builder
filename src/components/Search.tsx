@@ -5,7 +5,15 @@ interface SearchProps {
 export function Search({ action }: SearchProps) {
   return (
     <form action={action}>
-      <input type="text" name="characterName" placeholder="Character Name" />
+      <div>
+        <label htmlFor="characterName">Search Star Wars Characters</label>
+      </div>
+      <input
+        id="characterName"
+        type="text"
+        name="characterName"
+        placeholder="Character Name"
+      />
       <button type="submit">Search</button>
     </form>
   );
