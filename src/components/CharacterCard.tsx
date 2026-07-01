@@ -1,5 +1,7 @@
 import type { Person, PersonType } from "../App";
 
+type CharacterCardVariant = "result" | "complement";
+
 interface CharacterCardProps {
   id: string;
   name: string;
@@ -8,6 +10,7 @@ interface CharacterCardProps {
   isSelected: boolean;
   addToShip: (type: PersonType, id: string, person: Person) => void;
   removeFromShip: (id: string) => void;
+  variant: CharacterCardVariant;
 }
 export function CharacterCard({
   id,
@@ -17,6 +20,7 @@ export function CharacterCard({
   addToShip,
   removeFromShip,
   isSelected,
+  variant,
 }: CharacterCardProps) {
   const avatarUrl = new URL(`../images/avatars/${id}.jpg`, import.meta.url)
     .href;
@@ -43,7 +47,14 @@ export function CharacterCard({
       </div>
       <div className="character-card__footer">
         <div className="character-card__options">
-          {!isSelected ? (
+          {variant === "complement" ? (
+            <button
+              aria-label={`Remove ${name} from ship`}
+              onClick={() => removeFromShip(id)}
+            >
+              Remove from ship
+            </button>
+          ) : !isSelected ? (
             <>
               <button
                 aria-label={`Add ${name} to crew`}
@@ -68,12 +79,7 @@ export function CharacterCard({
               </button>
             </>
           ) : (
-            <button
-              aria-label={`Remove ${name} from ship`}
-              onClick={() => removeFromShip(id)}
-            >
-              Remove from ship
-            </button>
+            <p>Added to ship</p>
           )}
         </div>
       </div>

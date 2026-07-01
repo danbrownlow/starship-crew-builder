@@ -108,6 +108,7 @@ function App() {
                   addToShip={addToShipcomplement}
                   removeFromShip={removeFromShipcomplement}
                   isSelected={shipComplement.has(char.uid)}
+                  variant="result"
                 />
               </li>
             ))}
@@ -130,6 +131,7 @@ function App() {
                   addToShip={addToShipcomplement}
                   removeFromShip={removeFromShipcomplement}
                   isSelected={shipComplement.has(char.id)}
+                  variant="complement"
                 />
               </li>
             ))}
@@ -151,6 +153,7 @@ function App() {
                   addToShip={addToShipcomplement}
                   removeFromShip={removeFromShipcomplement}
                   isSelected={shipComplement.has(char.id)}
+                  variant="complement"
                 />
               </li>
             ))}
