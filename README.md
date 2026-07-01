@@ -78,7 +78,7 @@
 
 # What I would do with more time
 
-    - Card at capacity aria tags with visual indication also (maybe greyed out)
+    - Card at capacity aria tags with visual indication also (maybe greyed out) when we have reaches the max for crew and/or passengers.
     - Remove the any[] from the action, we should type the response from the SWAPI.
     - Improve error messages and how they're displayed
     - Launch readiness to be extracted and tested 
