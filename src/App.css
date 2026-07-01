@@ -72,3 +72,8 @@
 .character-results-list > li {
   flex: 0 0 200px;
 }
+
+.error-text {
+  font-size: 0.8em;
+  color: red;
+}

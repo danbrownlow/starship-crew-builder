@@ -1,4 +1,5 @@
 export interface SearchState {
+  // NOTE: With more time, should type the SWAPI response
   characters: any[];
   error: string | null;
 }
@@ -8,6 +9,11 @@ export async function searchCharactersActions(
   formData: FormData,
 ): Promise<SearchState> {
   const characterName = formData.get("characterName") as string;
+  if (!characterName)
+    return { characters: [], error: "An unexpected error occured" };
+
+  if (characterName.trim().length <= 0)
+    return { characters: [], error: "Please enter a search term" };
 
   try {
     const response = await fetch(

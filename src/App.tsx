@@ -90,6 +90,7 @@ function App() {
       <section id="header">
         <div className="search-bar">
           <Search action={formAction} />
+          {state.error && <p className="error-text">{state.error}</p>}
         </div>
       </section>
       <section id="results">
