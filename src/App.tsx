@@ -7,6 +7,7 @@ import {
 } from "./actions/searchAction";
 import { CharacterCard } from "./components/CharacterCard";
 import { useGetShipComplement } from "./hooks/useGetShipComplement";
+import { shipReducer } from "./reducers/shipReducer";
 
 const initialState: SearchState = { characters: [], error: null };
 
@@ -18,7 +19,7 @@ export interface Person {
 }
 
 export type PersonType = "crew" | "passenger";
-type PersonWithType = Person & {
+export type PersonWithType = Person & {
   type: PersonType;
 };
 
@@ -57,40 +58,31 @@ function App() {
     person: Person,
   ) => {
     setShipcomplement((prevMap) => {
-      const newMap = new Map(prevMap);
-      const currentCount = [...prevMap.values()].filter(
-        (p) => p.type === type,
-      ).length;
-
-      if (type === "passenger") {
-        if (currentCount >= passengerLimit) return prevMap;
-      }
-
-      if (type === "crew") {
-        if (currentCount >= crewLimit) return prevMap;
-      }
-
-      newMap.set(id, {
-        ...person,
-        type,
+      return shipReducer(prevMap, {
+        kind: "add",
+        type: type,
+        id: id,
+        person: person,
+        limits: { crew: crewLimit, passengers: passengerLimit },
       });
-
-      return newMap;
     });
   };
 
   const removeFromShipcomplement = (id: string) => {
     setShipcomplement((prevMap) => {
-      const newMap = new Map(prevMap);
-
-      newMap.delete(id);
-
-      return newMap;
+      return shipReducer(prevMap, {
+        kind: "remove",
+        id: id,
+      });
     });
   };
 
   const resetShipState = () => {
-    setShipcomplement(new Map());
+    setShipcomplement((prevMap) => {
+      return shipReducer(prevMap, {
+        kind: "reset",
+      });
+    });
   };
 
   return (
