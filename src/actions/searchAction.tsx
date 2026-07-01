@@ -9,7 +9,7 @@ export async function searchCharactersActions(
   formData: FormData,
 ): Promise<SearchState> {
   const characterName = formData.get("characterName") as string;
-  if (!characterName)
+  if (characterName === null)
     return { characters: [], error: "An unexpected error occured" };
 
   if (characterName.trim().length <= 0)
