@@ -17,7 +17,7 @@ export const useGetShipComplement = (shipId: number) => {
         const crewLimit = data.result.properties.crew;
         const passengerLimit = data.result.properties.passengers;
 
-        setResponse([crewLimit, passengerLimit]);
+        setResponse([Number(crewLimit), Number(passengerLimit)]);
       } catch (err: unknown) {
         if (err instanceof Error) {
           setError(err.message);
