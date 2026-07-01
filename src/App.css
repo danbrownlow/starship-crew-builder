@@ -1,37 +1,9 @@
-#header {
+#header, #results, #ship-complement, #launch-control {
   display: flex;
   flex-direction: column;
   gap: 25px;
   place-content: top;
   place-items: top;
-
-  @media (max-width: 1024px) {
-    padding: 32px 20px 24px;
-    gap: 18px;
-  }
-}
-
-#content {
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
-  place-content: top;
-  place-items: top;
-  flex-grow: 1;
-
-  @media (max-width: 1024px) {
-    padding: 32px 20px 24px;
-    gap: 18px;
-  }
-}
-
-#launch-control {
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
-  place-content: top;
-  place-items: top;
-  flex-grow: 1;
 
   @media (max-width: 1024px) {
     padding: 32px 20px 24px;
@@ -92,5 +64,11 @@
 
 .character-results-list {
   display: flex;
-  gap: 10px;
+  flex-wrap: wrap;
+  gap: 12px;
+  list-style: none;
+  padding: 0;
+}
+.character-results-list > li {
+  flex: 0 0 200px;
 }

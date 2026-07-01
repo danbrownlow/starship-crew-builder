@@ -91,6 +91,8 @@ function App() {
         <div className="search-bar">
           <Search action={formAction} />
         </div>
+      </section>
+      <section id="results">
         <div>
           {isPending && <p>Loading</p>}
 
@@ -111,7 +113,7 @@ function App() {
           </ul>
         </div>
       </section>
-      <section id="content">
+      <section id="ship-complement">
         <div>
           <h2>
             Crew - {crew.length}/{crewLimit}
