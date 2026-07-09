@@ -1,91 +1,70 @@
-# Technical Challenge
+# Starship Crew Builder
 
-# How to run
+A small React 19 + TypeScript app for searching Star Wars characters (via [SWAPI](https://www.swapi.tech/)) and assigning them to a starship's crew and passenger complement. When the ship is at capacity, it can be launched.
 
-    - Mise set to switch to Node 24.13.0
-    - `pnpm install` to install dependencies
-    - `pnpm dev` to run app locally
-    - `pnpm test` to run tests
+Built with a focus on accessible, keyboard-friendly UI, honest state management, and testing the parts that can actually go wrong.
 
-# Approach and overview
+## How to run
 
-    The technical task was to build a frontend which would fetch a list of characters from the SWAPI. The user would be able to add these characters to either crew or passengers to their ships complement. Once the ship was at capacity, the ship could be launched.
+Node version is pinned with [mise](https://mise.jdx.dev/) (Node 24.13.0).
 
-    My first task was to breakdown the AC presented into tickets. This would provide a useful build order for myself, as well as highlighting potential issues before I've even started on the development work. 
+```
+pnpm install
+pnpm dev
+pnpm test
+```
 
-    The tickets are in a tickets.md file provided in this directory.
+## Stack
 
-# Key decisions and trade offs
+- Vite, React 19, TypeScript
+- Oxlint for linting, Prettier for formatting
+- Vitest for tests
 
-## Set up
-        - Using Vite + TS + React to create project.
-        - Oxlint for linting, prettier for formatting.
-        - Mise to pin a specific node version
+## Key decisions
 
-## API
+### The API
 
-    The first ticket was a spike for looking into the SWAPI first, to see how the json response was structured. My initial assumption was that I'd have to call `/people?search` which would give a list of results which included only the `uid`, `name`, and `url`. This would mean that to fulfil the requirements, I would need to make a second call to `/people/:id` to get the gender and birthdate.
+My first assumption was that I'd need two calls: `/people?search=` for a result list, then `/people/:id` for each character's details. Reading the docs properly saved me from that. This API silently ignores `?search=` and actually wants `?name=`, which also returns the full character record in one call. A good reminder that an hour reading documentation can delete a whole layer of code.
 
-    However, after reading the documentation, I found out that for this particular api, `?search=` would just be silently ignored, and the actual parameter we needed to provide was `?name=`. This had the added bonus of also returning all a character's information so that a second call would not be required.
+### App state
 
-## App State
+State lives in a `Map()`, keyed by character ID, as the single source of truth. What I liked about it:
 
-    I decided to use a Map() for my state. This had a few immediate benefits:
-        - O(1) dedupe built in
-        - ID keyed
-        - IMO, a pleasant API that's easy to read and understand.
+- O(1) dedupe built in, so a character can't be added twice
+- ID keyed lookups
+- IMO a pleasant API that's easy to read
 
-    However, the downsides were:
-        - No native array methods like map(), filter(), or find()
-        - Have to spread when we're deriving the crew and passenger count
+The trade offs: no native `map()`/`filter()`/`find()`, and you have to spread it when deriving counts. Crew and passenger counts are derived from the Map rather than stored separately, so they can't drift apart.
 
-    Either way, the Map() was our single source of truth. We derived passenger and crew counts from here. This meant they couldn't drift apart.
+State transitions were later refactored into a reducer function, mostly because it made the high-risk logic much easier to test in isolation.
 
-## Form Actions
+### Form actions
 
-    Form actions are designed for mutations, and our use was just reading. However, the benefits we get are:
-        - Place to put error state
-        - Automatically captures return value
-        - isPending built-in
-        - Reduces boilerplate in <Search /> component
+React 19 form actions are designed for mutations and this is really a read, but they earned their place anyway:
 
-## Responsiveness
+- A natural home for error state
+- Return values captured automatically
+- `isPending` built in
+- Less boilerplate in the `<Search />` component
 
-    Layout uses flexbox with wrap so content reflows across screen sizes. 
+### Starship capacities
 
-## Starship Capacities
-    
-    Using a custom hook to fetch capacities from SWAPI. 
-    If we get a non-OK response (non 200-299 range) we fallback to a hardcoded default. 
-    Here we parse the return values which are strings into numbers which are used for comparisons.
+Capacities are fetched from SWAPI in a custom hook. If the response is non-OK we fall back to hardcoded defaults, and the string values from the API are parsed into numbers before any comparisons happen. Capacity checks read from the passed-in state rather than a captured value, which avoids stale-state overflows.
 
-## Testing
+### Testing
 
-    The most high-risk areas for testing were the capacities and the duplicates should not be added.
-    The state was refactored to a reducer function, which made the functionality we wanted to test much easier.
-    We read capacity from the passed in state to avoid stale state and overflows that can be caused by this.
-    
+The two places where a bug would actually matter: capacity limits and duplicate prevention. Tests concentrate there, against the reducer, rather than chasing coverage across presentational components.
 
-# Accessibility
-    ## What is implemented
-        - Semantic markup
-        - Self describing aria-labels on buttons
-        - Labelled search form `htmlFor`
-        - `aria-describedby` for linking text to button (in the case of the Launch button)
+## Accessibility
 
-    ## What I would implement next
-        - `aria-live` for results
+- Semantic markup throughout
+- Self-describing `aria-label`s on buttons
+- Search form labelled with `htmlFor`
+- `aria-describedby` linking explanatory text to the Launch button
 
-# What I would do with more time
+## Planned
 
-    - Card at capacity aria tags with visual indication also (maybe greyed out) when we have reaches the max for crew and/or passengers.
-    - Remove the any[] from the action, we should type the response from the SWAPI.
-    - Improve error messages and how they're displayed
-    - Launch readiness to be extracted and tested 
-    - <CharacterCard /> takes a variant so each context renders the correct action, but looking forward the next step would be to consider splitting into a separate component to make the CharacterCard purely presentational.
-    - I think using the Grid api would be better for this instance, but I find flex faster to implement.
-
-# Time
-
-    - I tried to stick to three hours, but in all honesty I think I went for about 3 hours 45mins or thereabouts. 
-    - Prioritised core AC and high-risk testing which meant styling and "flair" took a back seat.
+- `aria-live` announcements for search results
+- Visual and aria indication on cards when the ship is at capacity
+- Split `<CharacterCard />` so it's purely presentational, with actions provided by context
+- Better error messages and display
