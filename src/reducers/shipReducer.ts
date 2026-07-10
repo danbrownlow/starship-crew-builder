@@ -2,13 +2,18 @@ import type { Person, PersonType, PersonWithType } from "../App";
 
 type ShipState = Map<string, PersonWithType>;
 
+export type ShipActionLimits = {
+  crew: number;
+  passengers: number;
+};
+
 type ShipAction =
   | {
       kind: "add";
       type: PersonType;
       id: string;
       person: Person;
-      limits: any;
+      limits: ShipActionLimits;
     }
   | { kind: "remove"; id: string }
   | { kind: "reset" };

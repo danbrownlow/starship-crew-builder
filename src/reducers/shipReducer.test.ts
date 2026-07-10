@@ -2,7 +2,7 @@ import type { Person, PersonWithType } from "../App";
 import { shipReducer } from "./shipReducer";
 import { it, expect } from "vitest";
 
-const limits = { crew: 2, passenger: 2 };
+const limits = { crew: 2, passengers: 2 };
 
 const crew1: PersonWithType = {
   name: "Luke Skywalker",
