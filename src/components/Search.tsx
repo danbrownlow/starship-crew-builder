@@ -1,3 +1,5 @@
+import { Button } from "./Button";
+
 interface SearchProps {
   action: (formData: FormData) => void;
 }
@@ -14,7 +16,7 @@ export function Search({ action }: SearchProps) {
         name="characterName"
         placeholder="Character Name"
       />
-      <button type="submit">Search</button>
+      <Button type="submit" text="Search" />
     </form>
   );
 }

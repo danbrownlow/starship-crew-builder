@@ -8,6 +8,7 @@ import {
 import { CharacterCard } from "./components/CharacterCard";
 import { useGetShipComplement } from "./hooks/useGetShipComplement";
 import { shipReducer } from "./reducers/shipReducer";
+import { Button } from "./components/Button";
 
 const initialState: SearchState = { characters: [], error: null };
 
@@ -168,13 +169,12 @@ function App() {
           ) : (
             <p id="launchReadiness">Fill crew and passenger slots to launch</p>
           )}
-          <button
-            aria-describedby="launchReadiness"
+          <Button
+            describedBy="launchReadiness"
             onClick={resetShipState}
-            disabled={!readyToLaunch}
-          >
-            LAUNCH!!!
-          </button>
+            isDisabled={!readyToLaunch}
+            text="LAUNCH!!!"
+          />
         </div>
       </section>
     </>

@@ -1,4 +1,5 @@
 import type { Person, PersonType } from "../App";
+import { Button } from "./Button";
 
 type CharacterCardVariant = "result" | "complement";
 
@@ -48,24 +49,22 @@ export function CharacterCard({
       <div className="character-card__footer">
         <div className="character-card__options">
           {variant === "complement" ? (
-            <button
-              aria-label={`Remove ${name} from ship`}
+            <Button
+              ariaLabel={`Remove ${name} from ship`}
               onClick={() => removeFromShip(id)}
-            >
-              Remove from ship
-            </button>
+              text="Remove from ship"
+            />
           ) : !isSelected ? (
             <>
-              <button
-                aria-label={`Add ${name} to crew`}
+              <Button
+                ariaLabel={`Add ${name} to crew`}
                 onClick={() =>
                   addToShip("crew", id, { name, gender, birthYear, id })
                 }
-              >
-                Add Crew
-              </button>
-              <button
-                aria-label={`Add ${name} as a passenger`}
+                text="Add Crew"
+              />
+              <Button
+                ariaLabel={`Add ${name} as a passenger`}
                 onClick={() =>
                   addToShip("passenger", id, {
                     name,
@@ -74,9 +73,8 @@ export function CharacterCard({
                     id,
                   })
                 }
-              >
-                Add Passenger
-              </button>
+                text="Add Passenger"
+              />
             </>
           ) : (
             <p>Added to ship</p>
