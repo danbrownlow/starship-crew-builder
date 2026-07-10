@@ -9,6 +9,7 @@ import { CharacterCard } from "./components/CharacterCard";
 import { useGetShipComplement } from "./hooks/useGetShipComplement";
 import { shipReducer } from "./reducers/shipReducer";
 import { Button } from "./components/Button";
+import { Header } from "./components/Header";
 
 const initialState: SearchState = { characters: [], error: null };
 
@@ -118,9 +119,7 @@ function App() {
       </section>
       <section id="ship-complement">
         <div>
-          <h2>
-            Crew - {crew.length}/{crewLimit}
-          </h2>
+          <Header level="h2" title={`Crew - ${crew.length}/${crewLimit}`} />
           <ul className="character-results-list">
             {crew.map((char) => (
               <li key={char.id}>
@@ -140,9 +139,10 @@ function App() {
         </div>
 
         <div>
-          <h2>
-            Passengers - {passengers.length}/{passengerLimit}
-          </h2>
+          <Header
+            level="h2"
+            title={`Passengers - ${passengers.length}/${passengerLimit}`}
+          />
           <ul className="character-results-list">
             {passengers.map((char) => (
               <li key={char.id}>
