@@ -1,20 +1,28 @@
+import { useState } from "react";
 import { Button } from "./Button";
 
 interface SearchProps {
-  action: (formData: FormData) => void;
+  onSearch: (term: string) => void;
 }
 
-export function Search({ action }: SearchProps) {
+export function Search({ onSearch }: SearchProps) {
+  const [searchTerm, setSearchTerm] = useState("");
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
+  const handleSubmit = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    onSearch(searchTerm);
+  };
   return (
-    <form action={action}>
-      <div>
-        <label htmlFor="characterName">Search Star Wars Characters</label>
-      </div>
+    <form onSubmit={handleSubmit}>
       <input
         id="characterName"
         type="text"
         name="characterName"
         placeholder="Character Name"
+        value={searchTerm}
+        onChange={handleChange}
       />
       <Button type="submit" text="Search" />
     </form>

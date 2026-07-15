@@ -1,35 +1,9 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { fetchShipsComplement } from "../api/shipsComplement";
 
 export const useGetShipComplement = (shipId: number) => {
-  const [response, setResponse] = useState<Array<number> | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    async function fetchShipData() {
-      try {
-        const result = await fetch(
-          `https://swapi.tech/api/starships/${shipId}`,
-        );
-        if (!result.ok) {
-          throw new Error(`Response status: ${result.status}`);
-        }
-        const data = await result.json();
-        const crewLimit = data.result.properties.crew;
-        const passengerLimit = data.result.properties.passengers;
-
-        setResponse([Number(crewLimit), Number(passengerLimit)]);
-      } catch (err: unknown) {
-        if (err instanceof Error) {
-          setError(err.message);
-        } else {
-          setError("Something went wrong");
-        }
-
-        setResponse(null);
-        console.error(err);
-      }
-    }
-    fetchShipData();
-  }, [shipId]);
-  return [response, error] as const;
+  return useQuery({
+    queryKey: ["shipComplement", shipId],
+    queryFn: () => fetchShipsComplement(shipId),
+  });
 };
