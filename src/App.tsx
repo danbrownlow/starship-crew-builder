@@ -109,9 +109,13 @@ function App() {
             <p className="updating-indicator">Updating…</p>
           )}
 
-          {!isLoading && !isError && (
+          {!isLoading && !isError && characters?.length === 0 && (
+            <p>No characters found for "{searchTerm}"</p>
+          )}
+
+          {!isLoading && !isError && characters && characters.length > 0 && (
             <ul className="character-results-list">
-              {characters?.map((char) => (
+              {characters.map((char) => (
                 <li key={char.uid}>
                   <CharacterCard
                     id={char.uid}
