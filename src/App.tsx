@@ -58,6 +58,9 @@ function App() {
   const readyToLaunch =
     crew.length === crewLimit && passengers.length === passengerLimit;
 
+  const isCrewFull = crew.length >= crewLimit;
+  const isPassengerFull = passengers.length >= passengerLimit;
+
   const addToShipcomplement = (
     type: PersonType,
     id: string,
@@ -118,6 +121,8 @@ function App() {
                     addToShip={addToShipcomplement}
                     removeFromShip={removeFromShipcomplement}
                     isSelected={shipComplement.has(char.uid)}
+                    isCrewFull={isCrewFull}
+                    isPassengerFull={isPassengerFull}
                     variant="result"
                   />
                 </li>

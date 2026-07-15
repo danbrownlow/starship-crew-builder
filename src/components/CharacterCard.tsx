@@ -12,6 +12,8 @@ interface CharacterCardProps {
   addToShip: (type: PersonType, id: string, person: Person) => void;
   removeFromShip: (id: string) => void;
   variant: CharacterCardVariant;
+  isCrewFull?: boolean;
+  isPassengerFull?: boolean;
 }
 export function CharacterCard({
   id,
@@ -22,6 +24,8 @@ export function CharacterCard({
   removeFromShip,
   isSelected,
   variant,
+  isCrewFull = false,
+  isPassengerFull = false,
 }: CharacterCardProps) {
   const avatarUrl = new URL(`../images/avatars/${id}.jpg`, import.meta.url)
     .href;
@@ -58,6 +62,7 @@ export function CharacterCard({
             <>
               <Button
                 ariaLabel={`Add ${name} to crew`}
+                isDisabled={isCrewFull}
                 onClick={() =>
                   addToShip("crew", id, { name, gender, birthYear, id })
                 }
@@ -65,6 +70,7 @@ export function CharacterCard({
               />
               <Button
                 ariaLabel={`Add ${name} as a passenger`}
+                isDisabled={isPassengerFull}
                 onClick={() =>
                   addToShip("passenger", id, {
                     name,
