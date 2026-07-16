@@ -1,5 +1,4 @@
 import { useState } from "react";
-import "./App.css";
 import { Search } from "./components/Search";
 import { CharacterCard } from "./components/CharacterCard";
 import { useGetShipComplement } from "./hooks/useGetShipComplement";
@@ -96,14 +95,16 @@ function App() {
 
   return (
     <>
-      <section id="header">
-        <div className="search-bar">
+      <section className="flex flex-col gap-[25px] px-6 py-4 max-lg:gap-[18px] max-lg:px-5 max-lg:pt-8 max-lg:pb-6">
+        <div className="flex flex-col items-center gap-2 my-2">
           <Search onSearch={setSearchTerm} />
-          {isError && <p className="error-text">{error.message}</p>}
+          {isError && (
+            <p className="text-[0.8em] text-[red]">{error.message}</p>
+          )}
         </div>
       </section>
-      <section id="results">
-        <div>
+      <section className="flex flex-col gap-[25px] px-6 py-4 max-lg:gap-[18px] max-lg:px-5 max-lg:pt-8 max-lg:pb-6">
+        <div className="flex flex-col gap-3">
           {isLoading && <p>Loading</p>}
           {isFetching && !isLoading && (
             <p className="updating-indicator">Updating…</p>
@@ -114,9 +115,9 @@ function App() {
           )}
 
           {!isLoading && !isError && characters && characters.length > 0 && (
-            <ul className="character-results-list">
+            <ul className="flex flex-wrap gap-3 list-none p-0">
               {characters.map((char) => (
-                <li key={char.uid}>
+                <li key={char.uid} className="flex-[0_0_200px]">
                   <CharacterCard
                     id={char.uid}
                     name={char.properties.name}
@@ -135,8 +136,8 @@ function App() {
           )}
         </div>
       </section>
-      <section id="ship-complement">
-        <div>
+      <section className="flex flex-col gap-[25px] px-6 py-4 max-lg:gap-[18px] max-lg:px-5 max-lg:pt-8 max-lg:pb-6">
+        <div className="flex flex-col gap-3">
           <Header
             level="h2"
             title={
@@ -146,9 +147,9 @@ function App() {
             }
           />
 
-          <ul className="character-results-list">
+          <ul className="flex flex-wrap gap-3 list-none p-0">
             {crew.map((char) => (
-              <li key={char.id}>
+              <li key={char.id} className="flex-[0_0_200px]">
                 <CharacterCard
                   id={char.id}
                   name={char.name}
@@ -164,7 +165,7 @@ function App() {
           </ul>
         </div>
 
-        <div>
+        <div className="flex flex-col gap-3">
           <Header
             level="h2"
             title={
@@ -173,9 +174,9 @@ function App() {
                 : `Passengers - ${passengers.length}/${passengerLimit}`
             }
           />
-          <ul className="character-results-list">
+          <ul className="flex flex-wrap gap-3 list-none p-0">
             {passengers.map((char) => (
-              <li key={char.id}>
+              <li key={char.id} className="flex-[0_0_200px]">
                 <CharacterCard
                   id={char.id}
                   name={char.name}
@@ -192,8 +193,8 @@ function App() {
         </div>
       </section>
 
-      <section id="launch-control">
-        <div className="launch">
+      <section className="flex flex-col gap-[25px] px-6 py-4 max-lg:gap-[18px] max-lg:px-5 max-lg:pt-8 max-lg:pb-6">
+        <div className="flex flex-col items-center gap-3">
           {readyToLaunch ? (
             <p id="launchReadiness">Ready to Launch!</p>
           ) : (

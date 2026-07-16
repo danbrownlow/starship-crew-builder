@@ -30,62 +30,59 @@ export function CharacterCard({
   const avatarUrl = new URL(`../images/avatars/${id}.jpg`, import.meta.url)
     .href;
   return (
-    <div className="character-card">
-      <div className="character-card__header">
+    <div className="flex flex-col items-center justify-center gap-4 w-[200px] border-2 border-[#666] p-4 rounded-[10px]">
+      <div className="flex flex-col items-center gap-2">
         <img
-          className="character-card__avatar"
+          className="w-[100px] h-[100px] rounded-full object-cover"
           src={avatarUrl}
           alt={`${name}'s Avatar`}
         />
         <p>{name}</p>
       </div>
-      <div className="character-card__body">
-        <div className="character-card__details">
-          <dl>
-            <dt>Gender</dt>
-            <dd>{gender}</dd>
-
-            <dt>Birth Year</dt>
-            <dd>{birthYear}</dd>
-          </dl>
+      <dl className="flex flex-col items-center gap-2">
+        <div>
+          <dt className="text-[0.8rem] text-[#666]">Gender</dt>
+          <dd className="m-0">{gender}</dd>
         </div>
-      </div>
-      <div className="character-card__footer">
-        <div className="character-card__options">
-          {variant === "complement" ? (
+        <div>
+          <dt className="text-[0.8rem] text-[#666]">Birth Year</dt>
+          <dd className="m-0">{birthYear}</dd>
+        </div>
+      </dl>
+      <div className="flex flex-wrap justify-center gap-2">
+        {variant === "complement" ? (
+          <Button
+            ariaLabel={`Remove ${name} from ship`}
+            onClick={() => removeFromShip(id)}
+            text="Remove from ship"
+          />
+        ) : !isSelected ? (
+          <>
             <Button
-              ariaLabel={`Remove ${name} from ship`}
-              onClick={() => removeFromShip(id)}
-              text="Remove from ship"
+              ariaLabel={`Add ${name} to crew`}
+              isDisabled={isCrewFull}
+              onClick={() =>
+                addToShip("crew", id, { name, gender, birthYear, id })
+              }
+              text="Add Crew"
             />
-          ) : !isSelected ? (
-            <>
-              <Button
-                ariaLabel={`Add ${name} to crew`}
-                isDisabled={isCrewFull}
-                onClick={() =>
-                  addToShip("crew", id, { name, gender, birthYear, id })
-                }
-                text="Add Crew"
-              />
-              <Button
-                ariaLabel={`Add ${name} as a passenger`}
-                isDisabled={isPassengerFull}
-                onClick={() =>
-                  addToShip("passenger", id, {
-                    name,
-                    gender,
-                    birthYear,
-                    id,
-                  })
-                }
-                text="Add Passenger"
-              />
-            </>
-          ) : (
-            <p>Added to ship</p>
-          )}
-        </div>
+            <Button
+              ariaLabel={`Add ${name} as a passenger`}
+              isDisabled={isPassengerFull}
+              onClick={() =>
+                addToShip("passenger", id, {
+                  name,
+                  gender,
+                  birthYear,
+                  id,
+                })
+              }
+              text="Add Passenger"
+            />
+          </>
+        ) : (
+          <p>Added to ship</p>
+        )}
       </div>
     </div>
   );

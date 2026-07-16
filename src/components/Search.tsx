@@ -15,7 +15,7 @@ export function Search({ onSearch }: SearchProps) {
     onSearch(searchTerm);
   };
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="flex justify-center gap-2">
       <input
         id="characterName"
         type="text"
@@ -23,6 +23,7 @@ export function Search({ onSearch }: SearchProps) {
         placeholder="Character Name"
         value={searchTerm}
         onChange={handleChange}
+        className="rounded-md border border-[var(--border)] bg-transparent px-3 py-2 text-[var(--text-h)] placeholder:text-[var(--text)] focus:border-[var(--accent)] focus:outline-none"
       />
       <Button type="submit" text="Search" />
     </form>
