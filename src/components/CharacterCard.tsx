@@ -27,8 +27,7 @@ export function CharacterCard({
   isCrewFull = false,
   isPassengerFull = false,
 }: CharacterCardProps) {
-  const avatarUrl = new URL(`../images/avatars/${id}.jpg`, import.meta.url)
-    .href;
+  const avatarUrl = `/avatars/${id}.jpg`;
   return (
     <div className="flex flex-col items-center justify-center gap-4 w-[200px] border-2 border-[#666] p-4 rounded-[10px]">
       <div className="flex flex-col items-center gap-2">
