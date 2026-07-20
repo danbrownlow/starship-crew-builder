@@ -1,3 +1,5 @@
+import { parseLimit } from "../helpers/parseLimit";
+
 export interface ShipLimits {
   crew: number;
   passengers: number;
@@ -16,7 +18,7 @@ export async function fetchShipsComplement(
   const data = (await response.json()) as SwapiDetailResponse;
 
   return {
-    crew: Number(data.result.properties.crew),
-    passengers: Number(data.result.properties.passengers),
+    crew: parseLimit(data.result.properties.crew),
+    passengers: parseLimit(data.result.properties.passengers),
   };
 }
