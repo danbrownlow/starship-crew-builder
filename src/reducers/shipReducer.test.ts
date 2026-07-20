@@ -1,4 +1,4 @@
-import type { Person, PersonWithType } from "../App";
+import type { Person, PersonWithType } from "../types";
 import { shipReducer } from "./shipReducer";
 import { it, expect } from "vitest";
 

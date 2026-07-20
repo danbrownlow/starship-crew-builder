@@ -1,4 +1,4 @@
-import type { Person, PersonType } from "../App";
+import type { Person, PersonType } from "../types";
 import { Button } from "./Button";
 
 type CharacterCardVariant = "result" | "complement";

@@ -1,4 +1,4 @@
-import type { Person, PersonType, PersonWithType } from "../App";
+import type { Person, PersonType, PersonWithType } from "../types";
 
 type ShipState = Map<string, PersonWithType>;
 

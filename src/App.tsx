@@ -7,18 +7,7 @@ import { Button } from "./components/Button";
 import { Header } from "./components/Header";
 import { useQuery } from "@tanstack/react-query";
 import { fetchCharacters } from "./api/characters";
-
-export interface Person {
-  id: string;
-  name: string;
-  gender: string;
-  birthYear: string;
-}
-
-export type PersonType = "crew" | "passenger";
-export type PersonWithType = Person & {
-  type: PersonType;
-};
+import type { Person, PersonType, PersonWithType } from "./types";
 
 const SHIP_ID = 10;
 const PASSENGER_LIMIT_FALLBACK = 2;
