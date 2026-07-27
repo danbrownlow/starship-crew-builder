@@ -30,8 +30,10 @@ export interface SwapiListResponse {
 }
 
 export async function fetchCharacters(name: string): Promise<Character[]> {
-  const response = await fetch(`https://swapi.tech/api/people/?name=${name}`);
-  if (!response.ok) throw new Error("Fail");
+  const response = await fetch(
+    `https://swapi.tech/api/people/?name=${encodeURIComponent(name)}`,
+  );
+  if (!response.ok) throw new Error(`Response status: ${response.status}`);
 
   const data = (await response.json()) as SwapiListResponse;
 
